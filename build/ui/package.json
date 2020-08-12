@@ -1,0 +1,20 @@
+{
+    "name": "vueproject",
+    "version": "1.0.0",
+    "description": "",
+    "main": "source/server.js",
+    "author": "",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "fs-extra": "^8.1.0",
+        "less-loader": "^5.0.0",
+        "lodash": "^4.17.19",
+        "moment": "^2.24.0",
+        "reflect-metadata": "^0.1.13",
+        "typeorm": "^0.2.24",
+        "vue-material-design-icons": "^4.5.0"
+    }
+}
