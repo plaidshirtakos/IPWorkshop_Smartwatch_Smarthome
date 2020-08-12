@@ -48,7 +48,7 @@ export function setup (options: any, imports: Imports, register: RegisterFunctio
     }]);
 
     imports.workspace.registerWorkspaceRoutes([{
-        path:'/getpostexample',
+        path:'/workspace/postdata',
         component: GetPostExample
     }]);
 

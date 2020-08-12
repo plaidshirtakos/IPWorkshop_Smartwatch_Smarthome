@@ -25,7 +25,7 @@
 				<v-icon>mdi-gauge</v-icon>
 			</v-btn>
 
-			<v-btn @click="changePage('workspace')" value="videos">
+			<v-btn @click="changePage('postdata')" value="postdata">
 				<span>Controllers</span>
 				<v-icon>mdi-thermometer-plus</v-icon>
 			</v-btn>
@@ -68,8 +68,8 @@ export default Vue.extend({
 					// <<ip address>>:6969/ => <<ip address>>:6969/videos
 					// <<ip address>>:6969/<<AnyOtherPage>> => <<ip address>>:6969/videos
 					break;
-				case "workspace":
-					this.$router.push("/workspace");
+				case "postdata":
+					this.$router.push("/workspace/postdata");
 					/// Thiss will add to <<ip address>>:6969/ the workspace path
 					// <<ip address>>:6969/ => <<ip address>>:6969/workspace
 					// <<ip address>>:6969/<<AnyOtherPage>> => <<ip address>>:6969/workspace

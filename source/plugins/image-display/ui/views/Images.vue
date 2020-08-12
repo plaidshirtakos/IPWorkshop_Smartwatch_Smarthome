@@ -2,8 +2,6 @@
 	<v-app>
 		<v-content  fluid app>
 			<v-container pr-2 pl-2 pt-4>
-				I AM THE IMAGES PAGE
-				<button @click="dataVar='Button to change the var'">click Me!</button>
 				<v-btn @click="changePage('cmp')">Cmp</v-btn>
 				<v-btn @click="changePage('cmp1')">Cmp1</v-btn>
 				<router-view></router-view>
@@ -13,7 +11,6 @@
 </template>
 
 <script lang="ts">
-
 import Vue from "vue";
 export default Vue.extend({
 	name: "Images",
