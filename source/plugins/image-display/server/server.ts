@@ -1,9 +1,7 @@
-
 import { Imports, RegisterFunction } from "./server_types";
 import { Router } from "express";
 import * as fse from "fs-extra";
 import * as mqtt from "mqtt";
-// import fetch from "fetch";
 
 export function setup (options: any, imports: Imports, register: RegisterFunction)
 {
@@ -13,11 +11,52 @@ export function setup (options: any, imports: Imports, register: RegisterFunctio
 
     const client = mqtt.connect('mqtt://broker.hivemq.com');
     client.on('connect', () => {
-        //connected
-
         client.publish('led', 'on');
         client.publish('led', 'off');
         console.log("Mqtt connected");
+    });
+
+    imageDisplayRouter.post("/route/sendit", async(req, res) => {
+        try {
+            let data = req.body;
+            fse.writeFileSync("./data.json",data);
+        
+        } catch (e) {
+            console.error(e);
+            res.status(500).send({err:500});
+
+        }
+    });
+
+    imageDisplayRouter.get("/route/getit", async(req, res) => {
+        try {
+            let iotData:Buffer = ({} as Buffer);
+            let stringData:string = "";
+            let sendData:any = {};
+
+            iotData = fse.readFileSync("./data.json");  /*This is a Buffer*/
+            if(iotData)
+                stringData = Buffer.from(iotData).toString(); /*This is a string*/
+            else {
+                console.log("could not read file");
+            }
+
+            if(stringData)
+                sendData = JSON.parse(stringData); /*This is an object*/
+            else {
+                console.log("could not parse the file");
+            }
+
+            if(sendData) {
+                console.log(sendData.temparture);
+                res.status(200).send(sendData);
+            }
+
+        } catch (e) {
+            console.error(e);
+            res.status(500).send({err:500});
+
+        }
     });
 
     //a simple get route -> Go to PostGetExample.vue to see how you can use it in the frontend;

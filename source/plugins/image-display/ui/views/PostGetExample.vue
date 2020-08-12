@@ -1,23 +1,29 @@
 <template>
-    <div>
-        <!-- To access this page go to http://<<ip>>:6969/getpostexample -->
-        <h3>Post Example</h3>
-        <br>
-        <v-btn @click="postRoute()">Call Post Route</v-btn> 
-        <br>
-        {{postData}}
-        <br>
-        
-        <h3>Get Example</h3>
-        <br>
-        <v-btn @click="getRoute()">Call Get Route</v-btn> 
-        <br>
-        {{getData}}
-
-
-        <h3> Data being loaded </h3>
-        {{ exampleData }}
-	</div>
+  <div>
+    <v-row justify="space-around">
+      <v-col cols="12">
+        <header>Checkboxes</header>
+      </v-col>
+      <v-checkbox v-model="loading" class="mx-2" label="Activate"></v-checkbox>
+      <v-col cols="12">
+        <header>Light control</header>
+      </v-col>
+      <v-switch v-model="mandatory" class="mx-2" label="ON/OFF"></v-switch>
+      {{getData}}
+      <v-btn @click="turnOnLed()"> Open Lights </v-btn>
+      <v-col cols="12">
+        <header>Fan control</header>
+      </v-col>
+      <v-radio-group>
+        <v-radio
+          v-for="n in 3"
+          :key="n"
+          :label="`Radio ${n}`"
+          :value="n"
+        ></v-radio>
+      </v-radio-group>
+    </v-row>
+  </div>
 </template>
 
 <script lang="ts">
@@ -117,6 +123,18 @@ export default Vue.extend({
                 console.error(error);
             }
         },
+
+        async turnOnLed(){
+            try {
+                let response = await this.ui.application.api.get("/api/v1/turn/on/led");
+                if(response) {
+                    console.log("turned on the led");
+                }
+            } catch (e) {
+                
+            }
+        }
+
 	}
 });
 
