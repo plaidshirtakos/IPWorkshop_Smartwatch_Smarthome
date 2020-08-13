@@ -11,22 +11,82 @@ export function setup (options: any, imports: Imports, register: RegisterFunctio
 
     const client = mqtt.connect('mqtt://broker.hivemq.com');
     client.on('connect', () => {
-        client.publish('led', 'on');
-        client.publish('led', 'off');
-        console.log("Mqtt connected");
+    console.log("Mqtt broker connected");
+
+        client.subscribe('ipw/ruxi/sensors', function() {
+            client.on('message', function(topic, message, packet) {
+                console.log("Received '" + message + "' on '" + topic + "'");
+                if(topic === "data") {
+                    let stringMessage = Buffer.from(message).toString();
+                    let objectMessage = JSON.parse(stringMessage);
+                    fse.writeFileSync("./data.json",objectMessage);
+                }
+
+            });
+          });
     });
 
     imageDisplayRouter.post("/route/sendit", async(req, res) => {
         try {
             let data = req.body;
             fse.writeFileSync("./data.json",data);
-        
+            console.log("Sent to IoT!");
         } catch (e) {
             console.error(e);
             res.status(500).send({err:500});
 
         }
     });
+
+    imageDisplayRouter.get("/get/data/iot", async(req,res) => {
+        try {
+            let iotData:Buffer = ({} as Buffer);
+            let stringData:string = "";
+            let sendData:any = {};
+
+            iotData = fse.readFileSync("./data.json");  /*This is a Buffer*/
+            if(iotData)
+                stringData = Buffer.from(iotData).toString(); /*This is a string*/
+            else {
+                console.log("could not read file");
+                res.status(500).send({});
+            }
+
+            if(stringData)
+                sendData = JSON.parse(stringData); /*This is an object*/
+            else {
+                console.log("could not parse the file");
+                res.status(500).send({});
+            }
+
+            if(sendData) {
+                console.log(sendData.temparture);
+                res.status(200).send(sendData);
+            }
+
+        } catch (e) {
+            console.error(e);
+            res.status(500).send({err:500});
+
+        }
+    });
+
+    imageDisplayRouter.post("/send/data/iot", async(req,res) => {
+        try {
+            let message = req.body.message;
+            let topic = req.body.topic;
+            client.publish(topic,message);
+            console.log("Sent to IoT: " + topic + message);
+
+            res.status(200).send({});
+        } catch (e) {
+            console.error(e);
+            res.status(500).send({err:500});
+
+        }
+    });
+
+
 
     imageDisplayRouter.get("/route/getit", async(req, res) => {
         try {
