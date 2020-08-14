@@ -72,25 +72,6 @@ export default Vue.extend({
 		
 	},
 	methods: {
-		async sendIotData(topic:string,message:string) {
-			try {
-				if(topic === "ipw/diana/commands" && message === "led_off") {
-					this.fan = false;
-				} else if (topic === "ipw/diana/commands" && message === "led_on") {
-					this.fan = true;
-				}
-				
-				let response = await this.ui.application.api.post("/api/v1/send/data/iot", {
-					message:message,
-					topic:topic
-				})
-				if(response.status !== 200) {
-					console.error("Could not send message");
-				}
-			} catch (e) {
-				console.error(e);
-			}
-		},
 		changePage(page:string) {
 			switch (page) {
 				case "images":

@@ -18,7 +18,7 @@ export function setup (options: any, imports: Imports, register: RegisterFunctio
     // imports.application.registerView(Cmp);
 
     // imports.application.registerView(Cmp1);
-    
+
     imports.application.registerView(PropExample);
 
     let imagesRoutes = [

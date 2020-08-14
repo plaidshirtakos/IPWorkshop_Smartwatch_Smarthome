@@ -2,7 +2,6 @@
 	<v-app>
 		<v-content  fluid app>
 			<v-container pr-2 pl-2 pt-4>
-
 				<v-card>
 					<v-card-text>
 						<v-textarea v-model="topic" label="Topic"></v-textarea>
@@ -52,13 +51,7 @@ export default Vue.extend({
 	},
 	methods: {
 		async sendIotData(topic:string,message:string) {
-			try {
-				if(topic === "ipw/diana/commands" && message === "led_off") {
-					this.fan = false;
-				} else if (topic === "ipw/diana/commands" && message === "led_on") {
-					this.fan = true;
-				}
-				
+			try {	
 				let response = await this.ui.application.api.post("/api/v1/send/data/iot", {
 					message:message,
 					topic:topic
@@ -70,6 +63,23 @@ export default Vue.extend({
 				console.error(e);
 			}
 		},
+
+		async getIotData(topic:string,message:string) {
+			setInterval(async() => {
+				try {
+					let response = await this.ui.application.api.get("/api/v1/get/data/iot");
+
+					if(response.status === 200) {
+						this.iotData = response.data;
+					} else {
+						console.error("Cannot get data");
+					}
+					} catch (error) {
+						console.error(error);
+					}
+				},60000 * 5)
+		},
+
 		changePage(page:string) {
 			if(page === "cmp") {
 				this.$router.push("/workspace/images/cmp");

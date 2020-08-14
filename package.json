@@ -26,9 +26,11 @@
     "moment": "^2.24.0",
     "mqtt": "^4.1.0",
     "reflect-metadata": "^0.1.13",
+    "socket.io-client": "^2.3.0",
     "typeorm": "^0.2.24",
     "vue-chartjs": "^3.5.0",
-    "vue-material-design-icons": "^4.5.0"
+    "vue-material-design-icons": "^4.5.0",
+    "vue-socket.io": "^3.0.10"
   },
   "devDependencies": {
     "@mdi/font": "^4.9.95",
